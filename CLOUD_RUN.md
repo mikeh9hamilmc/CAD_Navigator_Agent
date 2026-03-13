@@ -4,6 +4,18 @@ This document explains how to deploy the **CAD Navigator Agent backend** to Goog
 
 ---
 
+## 🚀 Quick Deploy (Shortcut)
+
+For subsequent redeployments, you can use the automated Python script located in the root directory:
+
+1. **Run the script**:
+   ```bash
+   python deploy.py
+   ```
+This script handles project activation, Docker build, Artifact Registry push, and Cloud Run deployment automatically.
+
+---
+
 ## Architecture
 
 ```

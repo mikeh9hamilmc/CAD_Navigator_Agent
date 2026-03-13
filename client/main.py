@@ -6,6 +6,7 @@ from media_streams import MediaStreamer
 from solidworks_tools import execute_tool
 
 CLOUD_RUN_URI = "ws://cad-navigator-backend-abc123-uc.a.run.app/ws" #this is just a fake URI, replace it with your own Cloud Run URI (see CLOUD_RUN.md for instructions)
+#actual cloud run URI located in .env.local
 LOCAL_URI     = "ws://localhost:8080/ws"
 SERVER_URI = CLOUD_RUN_URI  # Switch to LOCAL_URI for local Docker testing
 

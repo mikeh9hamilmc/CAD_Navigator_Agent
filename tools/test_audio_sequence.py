@@ -18,7 +18,10 @@ import websockets
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'client'))
 from solidworks_tools import execute_tool
 
-SERVER_URI = "ws://localhost:8000/ws"
+# Set to your Cloud Run URL or keep as localhost for Docker/local testing
+CLOUD_RUN_URI = "wss://cad-navigator-backend-388411026459.us-central1.run.app/ws"
+LOCAL_URI     = "ws://localhost:8080/ws"
+SERVER_URI = CLOUD_RUN_URI  # Switch to CLOUD_RUN_URI to test the live cloud backend
 RECORDINGS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "recordings")
 CHUNK_SIZE = 512  # Samples per chunk (matches MediaStreamer)
 SAMPLE_RATE = 16000
