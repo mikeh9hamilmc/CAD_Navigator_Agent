@@ -80,7 +80,7 @@ def draw_shape(shape_type: str, dimensions: dict):
     shape_type = shape_type.lower()
     try:
         if shape_type == "circle":
-            r = float(dimensions.get("radius", 0.05))
+            r = float(dimensions.get("radius", 5))
             skManager.CreateCircle(0, 0, 0, r, 0, 0)
             swModel.SketchManager.InsertSketch(True)
             swModel.ViewZoomtofit2()
@@ -89,13 +89,13 @@ def draw_shape(shape_type: str, dimensions: dict):
         elif shape_type == "rectangle":
             w = float(dimensions.get("width", 1))
             h = float(dimensions.get("height", 1))
-            skManager.CreateCornerRectangle(0, 0, 0, w/2, h/2, 0)
+            skManager.CreateCornerRectangle(0, 0, 0, w, h, 0)
             swModel.SketchManager.InsertSketch(True)
             swModel.ViewZoomtofit2()
             return f"Drew a rectangle {w}m x {h}m"
             
         elif shape_type == "line":
-            l = float(dimensions.get("length", 0.1))
+            l = float(dimensions.get("length", 1))
             skManager.CreateLine(0, 0, 0, l, 0, 0)
             swModel.SketchManager.InsertSketch(True)
             swModel.ViewZoomtofit2()

@@ -9,9 +9,10 @@ from google.genai import types
 from agent import get_agent_config
 from dotenv import load_dotenv
 
-# Load environment variables from .env.local in the parent directory
+# Load .env.local only when running locally (the file won't exist in Docker/Cloud Run)
 env_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '.env.local')
-load_dotenv(dotenv_path=env_path)
+if os.path.exists(env_path):
+    load_dotenv(dotenv_path=env_path)
 
 app = FastAPI()
 
@@ -20,7 +21,7 @@ api_key = os.getenv("GEMINI_API_KEY")
 if not api_key or api_key == "your_gemini_api_key_here":
     print("WARNING: GEMINI_API_KEY is missing or not configured correctly in .env.local.")
 
-client = genai.Client()
+client = genai.Client(api_key=api_key)
 
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
@@ -174,4 +175,5 @@ async def websocket_endpoint(websocket: WebSocket):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000, ws_ping_interval=None, ws_ping_timeout=None)
+    port = int(os.getenv("PORT", 8080))
+    uvicorn.run(app, host="0.0.0.0", port=port, ws_ping_interval=None, ws_ping_timeout=None)

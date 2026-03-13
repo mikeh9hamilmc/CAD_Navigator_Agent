@@ -12,8 +12,6 @@ This project is a submission for the "Gemini Live Agent Challenge" (UI Navigator
 * **Cloud Hosting:** Google Cloud Run (must host the backend/agent logic to satisfy the Google Cloud Service requirement).
 * **Local Client:** A Python-based desktop client to capture screen/audio and relay it to the Cloud Run backend via WebSockets/gRPC.
 
-
-
 ## 🧠 Core Agent Definition
 **Name:** `CAD_Navigator_Agent`
 **Role:** Expert Mechanical Engineer and SolidWorks UI Assistant.
@@ -54,3 +52,13 @@ These tools must be exposed to the ADK agent so it can physically control the CA
 * **Media Stream Synchronization:** Fixed the `1008` (policy violation) connection drop by pausing audio and image WebSocket streams from the client while the model processes and responds to tool execution. Streams now accurately resume only when the `turn_complete` signal is received from Gemini.
 * **System Prompt Optimization:** Rewrote the agent's system prompt to force immediate tool execution. The model now prioritizes firing the SolidWorks tool API call over narrating its thought process, saving valuable session time and preventing timeouts.
 * **Automated Audio Test Client:** Built `test_audio_sequence.py` and `record_command.py` to facilitate rapid, reproducible testing. The test client sequentially streams pre-recorded voice commands (`.wav` files) to the backend, accurately simulating a live user session to validate complex, multi-turn tool chains (e.g., *New Part -> Select Plane -> Start Sketch -> Draw Shape -> Extrude*).
+
+## 📅 Progress Log: March 12, 2026
+* **Docker Containerization:** Replaced the placeholder Node.js/Nginx `Dockerfile` with a production-ready Python 3.12 slim container for the FastAPI/uvicorn backend. Added `.dockerignore` to exclude `venv/`, secrets, `client/`, and `tools/` from the build context.
+* **Cloud Run Deployment:** Backend is live on Google Cloud Run at see .env.local for the URI. Deployment uses `--timeout=3600` to support long-running WebSocket sessions. Artifact Registry repository `cad-navigator` created under project `ui-cad-navigator-agent` in `us-central1`.
+* **Secret Manager Integration:** `GEMINI_API_KEY` is stored in Google Secret Manager and injected into the container at runtime via `--set-secrets`. The key is never baked into the image, never appears in build logs, and never touches the Git repository.
+* **WebSocket Ping Bug Fix:** Resolved `1011 keepalive ping timeout` crash. Root cause: the uvicorn CLI flag `--ws-ping-interval 0` means "ping every 0 seconds" (not "disabled"). Fixed by running `python server.py` in Docker so that the Python API `ws_ping_interval=None` setting takes effect correctly.
+* **Docker API Key Fix:** Fixed `genai.Client()` crashing on startup in Docker. Root cause: `load_dotenv` was unconditionally overwriting the injected env var with an empty value since `.env.local` doesn't exist in the container. Fixed by making `load_dotenv` conditional on the file existing and passing `api_key=api_key` explicitly to `genai.Client()`.
+* **Client URI Update:** `client/main.py` now defines `CLOUD_RUN_URI` and `LOCAL_URI` constants, making it trivial to switch between Cloud Run and local Docker testing.
+* **SolidWorks Tool Dimension Defaults:** Updated `solidworks_tools.py` default dimensions — circle radius `0.05 → 5`, rectangle uses full `w,h` instead of `w/2,h/2`, line length `0.1 → 1` — to match user-expected scale when dimensions are omitted.
+* **Cloud Run Documentation:** Rewrote `CLOUD_RUN.md` from scratch for this project with a 9-step setup guide including all `gcloud` CLI commands, Secret Manager flow, `cloudbuild.yaml` for CI/CD, and a troubleshooting table.

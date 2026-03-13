@@ -1,0 +1,24 @@
+# Exclude everything by default, then whitelist what's needed
+# (backend/ is the only directory the Dockerfile copies)
+
+# Python artifacts
+backend/venv/
+backend/__pycache__/
+backend/*.pyc
+backend/*.pyo
+
+# Secrets — never bake into the image
+.env.local
+*.env
+
+# Source directories not used by the backend container
+client/
+sw_parts/
+tools/
+
+# Version control
+.git/
+.gitignore
+
+# Documentation (not needed at runtime)
+*.md
