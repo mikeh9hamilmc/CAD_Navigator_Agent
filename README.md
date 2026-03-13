@@ -6,6 +6,8 @@ GeminiCAD Live is a real-time, multimodal AI agent built for the Google Gemini L
 
 ---
 
+## Judges -> Please see JUDGES_INSTRUCTIONS.md file that is included in the additional info part of the hackathon submission. These instructions will guide you on how to evaluate this submission.
+
 ## 🏗️ Architecture
 
 - **Backend (Google Cloud Run):** A Python FastAPI/uvicorn server that orchestrates the Gemini Live API session and tool logic.
@@ -63,15 +65,21 @@ You can run the entire stack locally for development and rapid testing.
 ### C. Run the Local Client
 
 1. Open a terminal in the `client/` directory.
-2. Install dependencies:
+2. **Create and activate a virtual environment**:
+   ```bash
+   python -m venv venv
+   # Windows PowerShell:
+   .\venv\Scripts\Activate.ps1
+   ```
+3. **Install dependencies**:
    ```bash
    pip install -r requirements.txt
    ```
-3. In `main.py`, ensure `SERVER_URI` is set to `LOCAL_URI`:
+4. In `main.py`, ensure `SERVER_URI` is set to `LOCAL_URI`:
    ```python
    SERVER_URI = LOCAL_URI
    ```
-4. Run the client:
+5. **Run the client**:
    ```bash
    python main.py
    ```
@@ -87,12 +95,23 @@ Follow the detailed **[Cloud Run Deployment Guide](./CLOUD_RUN.md)** to set up A
 
 ### 2. Connect the Local Client
 1. Once deployed, obtain your Cloud Run Service URL (e.g., `https://your-service-abc.a.run.app`).
-2. In `client/main.py`, update `CLOUD_RUN_URI` with your service URL (ensuring you use `wss://`):
+2. Open a terminal in the `client/` directory.
+3. **Create and activate a virtual environment**:
+   ```bash
+   python -m venv venv
+   # Windows PowerShell:
+   .\venv\Scripts\Activate.ps1
+   ```
+4. **Install dependencies**:
+   ```bash
+   pip install -r requirements.txt
+   ```
+5. In `client/main.py`, update `CLOUD_RUN_URI` with your service URL (ensuring you use `wss://`):
    ```python
    CLOUD_RUN_URI = "wss://your-service-abc-uc.a.run.app/ws"
    SERVER_URI = CLOUD_RUN_URI
    ```
-3. Run the client:
+6. **Run the client**:
    ```bash
    python main.py
    ```
