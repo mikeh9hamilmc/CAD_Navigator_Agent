@@ -1,7 +1,7 @@
 # GeminiCAD Live: Real-Time Multimodal CAD Assistant
 
 ### **Elevator Pitch**
-> Empower your engineering with GeminiCAD: A multimodal agent that sees your screen and commands SolidWorks in real-time. Speak your design, watch it build, and let Gemini handle the clicks.
+> Empower your engineering with GeminiCAD Live: A multimodal agent that sees your screen and commands SolidWorks in real-time. Speak your design, watch it build, and let Gemini handle the clicks.
 
 ---
 
